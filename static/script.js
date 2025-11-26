@@ -2,11 +2,11 @@ const addTaskForm = document.getElementById("addTaskForm");
 const newTaskInput = document.getElementById("newTaskInput");
 const taskList = document.getElementById("taskList");
 
-// Add new task
-addTaskForm.addEventListener("submit", async e => {
+addTaskForm.addEventListener("submit", async (e) => {
   e.preventDefault();
   const title = newTaskInput.value.trim();
   if (!title) return;
+
   const formData = new FormData();
   formData.append("title", title);
 
@@ -16,10 +16,10 @@ addTaskForm.addEventListener("submit", async e => {
   newTaskInput.value = "";
 });
 
-// Append task to UI
 function appendTask(task) {
   const li = document.createElement("li");
   li.dataset.id = task.id;
+  li.className = task.completed ? "completed" : "";
   li.innerHTML = `
     <span class="task-title" contenteditable="true">${task.title}</span>
     <div class="task-actions">
@@ -27,12 +27,10 @@ function appendTask(task) {
       <button class="delete-btn">🗑</button>
     </div>
   `;
-  if (task.completed) li.classList.add("completed");
   taskList.appendChild(li);
   bindTaskEvents(li);
 }
 
-// Bind toggle, delete, edit events
 function bindTaskEvents(li) {
   const id = li.dataset.id;
   const toggleBtn = li.querySelector(".toggle-btn");
@@ -53,9 +51,19 @@ function bindTaskEvents(li) {
   titleSpan.addEventListener("blur", async () => {
     const newTitle = titleSpan.textContent.trim();
     if (!newTitle) return;
-    await fetch(`/api/edit/${id}`, { method: "POST", body: new URLSearchParams({ title: newTitle }) });
+    await fetch(`/api/edit/${id}`, {
+      method: "POST",
+      body: new URLSearchParams({ title: newTitle }),
+    });
+  });
+
+  titleSpan.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      titleSpan.blur();
+    }
   });
 }
 
-// Bind events for existing tasks on page load
+// Initialize existing tasks on page load
 document.querySelectorAll("#taskList li").forEach(bindTaskEvents);
