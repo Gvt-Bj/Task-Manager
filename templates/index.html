@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Interactive Task Manager</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>DeskTasks</h1>
+    <form id="addTaskForm">
+      <input type="text" id="newTaskInput" placeholder="New task..." required>
+      <button type="submit">Add</button>
+    </form>
+
+    <ul id="taskList">
+      {% for task in tasks %}
+      <li data-id="{{ task[0] }}" class="{% if task[2] %}completed{% endif %}">
+        <span class="task-title" contenteditable="true">{{ task[1] }}</span>
+        <div class="task-actions">
+          <button class="toggle-btn">✔</button>
+          <button class="delete-btn">🗑</button>
+        </div>
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+  <script src="/static/script.js"></script>
+</body>
+</html>
