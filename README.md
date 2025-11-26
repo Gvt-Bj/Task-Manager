@@ -8,7 +8,7 @@ task-manager/
 ├─ tasks.db              # SQLite database (auto-created)
 └─ README.md
 
-git clone https://github.com/yourusername/desk-tasks.git
+git clone https://github.com/Gvt-Bj/desk-tasks.git
 cd desk-tasks
 
 pip install fastapi uvicorn jinja2
